@@ -1,46 +1,40 @@
-import { createHash } from "crypto";
-
-function extractHostname(url) {
-  try {
-    return new URL(url).hostname.toLowerCase();
-  } catch {
-    return "";
-  }
-}
+import { enrichReport } from "../utils/enrichReport.js";
 
 export function normalizeUrlhausEntry(entry) {
   const url = String(entry?.url || "").trim();
-  const host = String(entry?.host || extractHostname(url)).toLowerCase();
   const id = String(entry?.id || "");
-  const urlHash = createHash("sha256")
-    .update(url.toLowerCase())
-    .digest("hex")
-    .slice(0, 24);
-  const sourceId = id ? `urlhaus_${id}` : `urlhaus_${urlHash}`;
   const threat = String(entry?.threat || "malware_download");
   const tags = Array.isArray(entry?.tags) ? entry.tags.filter(Boolean) : [];
 
-  return {
-    source: "urlhaus",
-    source_id: sourceId,
-    title: host ? `URLHaus listing: ${host}` : "URLHaus malware URL",
-    body: `Malware URL observed on URLHaus.\nHost: ${host || "unknown"}\nThreat: ${threat}\nURL: ${url}`,
-    author: String(entry?.reporter || "urlhaus"),
-    url: url || null,
-    scam_type: threat.includes("phish") ? "phishing" : "malware",
-    keywords: ["urlhaus", threat, host, ...tags]
-      .filter((w) => w && String(w).length > 2)
-      .map(String)
-      .slice(0, 20),
-    created_at_source: entry?.date_added
-      ? new Date(String(entry.date_added).replace(" UTC", "Z")).toISOString()
-      : new Date().toISOString(),
-    raw_data: {
-      ...entry,
-      host,
-      url_hash: urlHash,
-      threat_category: threat,
-      risk_level: "high",
+  const enriched = enrichReport(
+    {
+      source: "urlhaus",
+      source_id: id ? `urlhaus_${id}` : "",
+      title: "URLHaus malware URL",
+      body: `Malware URL observed on URLHaus.\nThreat: ${threat}\nURL: ${url}`,
+      author: String(entry?.reporter || "urlhaus"),
+      url: url || null,
+      scam_type: threat.includes("phish") ? "phishing" : "malware",
+      keywords: ["urlhaus", threat, ...tags].slice(0, 20),
+      created_at_source: entry?.date_added
+        ? new Date(String(entry.date_added).replace(" UTC", "Z")).toISOString()
+        : new Date().toISOString(),
+      raw_data: {
+        ...entry,
+        threat_category: threat,
+        risk_level: "high",
+      },
     },
+    { url, host: entry?.host }
+  );
+
+  const host = enriched.raw_data?.host;
+  const fp = enriched.raw_data?.url_fingerprint;
+
+  return {
+    ...enriched,
+    source_id: id ? `urlhaus_${id}` : `urlhaus_${fp || "unknown"}`,
+    title: host ? `URLHaus listing: ${host}` : enriched.title,
+    body: `Malware URL observed on URLHaus.\nHost: ${host || "unknown"}\nThreat: ${threat}\nURL: ${url}`,
   };
 }

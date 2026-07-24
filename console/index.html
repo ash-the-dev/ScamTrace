@@ -270,6 +270,72 @@
     .toast.ok { box-shadow: 4px 4px 0 0 var(--ok); }
 
     .muted { color: var(--muted); font-size: 0.85rem; }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.75rem;
+    }
+
+    @media (max-width: 900px) {
+      .monitor-grid { grid-template-columns: 1fr; }
+    }
+
+    .monitor-col {
+      background: var(--card);
+      color: var(--ink);
+      border: 3px solid #000;
+      box-shadow: 5px 5px 0 0 var(--teal);
+      padding: 1rem;
+      min-height: 220px;
+    }
+
+    .monitor-col h2 {
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .monitor-col h2 .count {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #404040;
+    }
+
+    .cluster {
+      border-top: 2px solid #e5e5e5;
+      padding: 0.7rem 0;
+    }
+
+    .cluster:first-of-type { border-top: 0; padding-top: 0; }
+
+    .cluster .host {
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: -0.01em;
+    }
+
+    .cluster .explain {
+      margin-top: 0.35rem;
+      font-size: 0.82rem;
+      color: #404040;
+      line-height: 1.45;
+    }
+
+    .cluster .meta {
+      margin-top: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: #525252;
+    }
+
+    .badge.warn { background: #fff7ed; color: #c2410c; }
+    .badge.new { background: #eff6ff; color: #1d4ed8; }
   </style>
 </head>
 <body>
@@ -277,7 +343,7 @@
     <header>
       <div class="brand">
         <h1>ScamTrace</h1>
-        <span>Ops console — test ingest & inspect results</span>
+        <span>Ops console — test ingest & monitor scam patterns</span>
       </div>
       <div class="actions">
         <button type="button" class="btn-ghost" id="refreshBtn">Refresh</button>
@@ -293,6 +359,23 @@
       <div class="stat"><div class="label">OpenPhish</div><div class="value" id="statOpenphish">—</div></div>
       <div class="stat"><div class="label">URLHaus</div><div class="value" id="statUrlhaus">—</div></div>
       <div class="stat"><div class="label">Spamhaus</div><div class="value" id="statSpamhaus">—</div></div>
+    </div>
+
+    <h2>Scam monitor</h2>
+    <p class="muted" style="margin:-0.35rem 0 0.9rem">Cross-source clusters by host — ongoing, rising, and newly seen patterns.</p>
+    <div class="monitor-grid" id="monitor">
+      <section class="monitor-col">
+        <h2>Ongoing <span class="count" id="ongoingCount">0</span></h2>
+        <div id="ongoingList"></div>
+      </section>
+      <section class="monitor-col">
+        <h2>Rising <span class="count" id="risingCount">0</span></h2>
+        <div id="risingList"></div>
+      </section>
+      <section class="monitor-col">
+        <h2>New <span class="count" id="emergingCount">0</span></h2>
+        <div id="emergingList"></div>
+      </section>
     </div>
 
     <h2>Run ingest</h2>
@@ -454,6 +537,46 @@
         : "";
     }
 
+    function renderClusters(targetId, countId, items, badgeClass) {
+      $(countId).textContent = String((items || []).length);
+      const root = $(targetId);
+      if (!items?.length) {
+        root.innerHTML = `<p class="meta">No clusters in this bucket yet. Run ingest to populate.</p>`;
+        return;
+      }
+      root.innerHTML = items
+        .map((c) => {
+          const types = (c.scamTypes || []).join(", ") || "unknown";
+          const sources = (c.sources || []).join(", ") || "—";
+          return `<article class="cluster">
+            <div class="host">${escapeHtml(c.host)} <span class="badge ${badgeClass}">${escapeHtml(types)}</span></div>
+            <p class="explain">${escapeHtml(c.explanation)}</p>
+            <div class="meta">${c.count} reports · ${escapeHtml(sources)} · last ${escapeHtml(fmtDate(c.lastSeen))}</div>
+          </article>`;
+        })
+        .join("");
+    }
+
+    async function loadIntel() {
+      const res = await fetch("/api/intel", { credentials: "include" });
+      if (res.status === 401) {
+        window.location.replace("/login");
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || "Failed to load intel", "error");
+        return;
+      }
+      renderClusters("ongoingList", "ongoingCount", data.ongoing, "ok");
+      renderClusters("risingList", "risingCount", data.rising, "warn");
+      renderClusters("emergingList", "emergingCount", data.emerging, "new");
+    }
+
+    async function refreshAll() {
+      await Promise.all([loadReports(), loadIntel()]);
+    }
+
     async function runSource(source, btn) {
       btn.disabled = true;
       $("runStatus").textContent = `Running ${source}…`;
@@ -471,7 +594,7 @@
           showToast(data.error || `${source} failed`, "error");
         } else {
           showToast(`${source} finished`, "ok");
-          await loadReports();
+          await refreshAll();
         }
       } catch (err) {
         $("runStatus").textContent = String(err);
@@ -489,12 +612,12 @@
     document.querySelectorAll(".run-btn").forEach((btn) => {
       btn.addEventListener("click", () => runSource(btn.dataset.source, btn));
     });
-    $("refreshBtn").addEventListener("click", () => loadReports());
+    $("refreshBtn").addEventListener("click", () => refreshAll());
     $("logoutBtn").addEventListener("click", logout);
 
     (async () => {
       if (!(await ensureAuth())) return;
-      await loadReports();
+      await refreshAll();
     })();
   </script>
 </body>

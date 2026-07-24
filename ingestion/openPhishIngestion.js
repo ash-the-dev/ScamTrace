@@ -1,5 +1,8 @@
 import axios from "axios";
-import { normalizeOpenPhishUrl } from "../normalization/normalizeOpenPhishUrl.js";
+import {
+  normalizeOpenPhishUrl,
+  finalizeOpenPhishRecord,
+} from "../normalization/normalizeOpenPhishUrl.js";
 import { withSupabaseRetry } from "../utils/supabaseRetry.js";
 
 const USER_AGENT =
@@ -65,7 +68,9 @@ export async function ingestOpenPhish(supabase) {
       `OpenPhish: fetched ${recordsProcessed} URLs from ${feedUrl} (limit ${limit})`
     );
 
-    const records = urls.map((url) => normalizeOpenPhishUrl(url, feedUrl));
+    const records = urls.map((url) =>
+      finalizeOpenPhishRecord(normalizeOpenPhishUrl(url, feedUrl))
+    );
 
     for (let i = 0; i < records.length; i += batchSize) {
       const batch = records.slice(i, i + batchSize);

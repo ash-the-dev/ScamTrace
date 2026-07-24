@@ -1,6 +1,7 @@
 import axios from "axios";
 import { classifyScam } from "../classification/classifyScam.js";
 import { normalizeRedditPost } from "../normalization/normalizeRedditPost.js";
+import { withSupabaseRetry } from "../utils/supabaseRetry.js";
 
 const USER_AGENT =
     "script:ScamTrace:1.0 (by /u/scamtrace; contact: contact@scamtrace.io)";
@@ -127,11 +128,13 @@ export async function ingestRedditSources(supabase) {
                     scamType
                 );
 
-                const { error } = await supabase
-                    .from("scam_reports")
-                    .upsert(record, {
-                        onConflict: "source_id",
-                    });
+                const { error } = await withSupabaseRetry(
+                    () =>
+                        supabase.from("scam_reports").upsert(record, {
+                            onConflict: "source_id",
+                        }),
+                    { label: `reddit upsert ${source.name}` }
+                );
 
                 if (error) {
                     console.error("Save Error:", error.message);
@@ -147,15 +150,17 @@ export async function ingestRedditSources(supabase) {
                 }
             }
 
-            const { error: logError } = await supabase
-                .from("ingestion_logs")
-                .insert({
-                    source: source.name,
-                    records_processed: recordsProcessed,
-                    records_saved: recordsSaved,
-                    status: "success",
-                    message: `Reddit ingestion completed via ${method}`,
-                });
+            const { error: logError } = await withSupabaseRetry(
+                () =>
+                    supabase.from("ingestion_logs").insert({
+                        source: source.name,
+                        records_processed: recordsProcessed,
+                        records_saved: recordsSaved,
+                        status: "success",
+                        message: `Reddit ingestion completed via ${method}`,
+                    }),
+                { label: `reddit ingestion_logs ${source.name}` }
+            );
 
             if (logError) {
                 console.error("Log Save Error:", logError.message);
@@ -182,6 +187,13 @@ export async function ingestRedditSources(supabase) {
         }
 
         // Avoid Reddit rate limits when polling multiple subreddits.
-        await new Promise((resolve) => setTimeout(resolve, 15000));
+        // Shorter default on Vercel so the cron stays under function maxDuration.
+        const delayMs = Number(
+            process.env.REDDIT_SOURCE_DELAY_MS ??
+                (process.env.VERCEL ? 2000 : 15000)
+        );
+        if (delayMs > 0) {
+            await new Promise((resolve) => setTimeout(resolve, delayMs));
+        }
     }
 }

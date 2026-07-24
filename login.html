@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScamTrace — Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #f5f5f5;
+      --muted: #a3a3a3;
+      --teal: #0f766e;
+      --teal-mid: #14b8a6;
+      --teal-deep: #0c3d39;
+      --card: #ffffff;
+      --ink: #0a0a0a;
+      --danger: #dc2626;
+      --font: "DM Sans", system-ui, sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(20, 184, 166, 0.18), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(12, 61, 57, 0.55), transparent 50%),
+        #000;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1.25rem;
+    }
+
+    .shell {
+      width: min(420px, 100%);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .brand h1 {
+      font-size: clamp(2.4rem, 8vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .brand p {
+      margin-top: 0.65rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .panel {
+      background: var(--card);
+      color: var(--ink);
+      border: 3px solid #000;
+      box-shadow: 6px 6px 0 0 var(--teal);
+      padding: 1.75rem 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      border: 3px solid #000;
+      background: #f8faf9;
+      color: var(--ink);
+      font: 500 1rem/1.4 var(--mono);
+      padding: 0.85rem 0.9rem;
+      outline: none;
+    }
+
+    input[type="password"]:focus {
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.35);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 1rem;
+      border: 3px solid #000;
+      background: linear-gradient(180deg, var(--teal-mid), var(--teal-deep));
+      color: #fff;
+      font: 700 0.95rem/1 var(--font);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.95rem 1rem;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 0 #000;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    button:hover { transform: translate(1px, 1px); box-shadow: 3px 3px 0 0 #000; }
+    button:disabled { opacity: 0.65; cursor: wait; }
+
+    .error {
+      margin-top: 0.85rem;
+      color: var(--danger);
+      font-size: 0.9rem;
+      min-height: 1.25rem;
+    }
+
+    .hint {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #525252;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="brand">
+      <h1>ScamTrace</h1>
+      <p>Ops console — run feeds, inspect results</p>
+    </div>
+    <form class="panel" id="loginForm">
+      <label for="password">Access password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required autofocus />
+      <button type="submit" id="submitBtn">Enter console</button>
+      <p class="error" id="error" aria-live="polite"></p>
+      <p class="hint">Uses CONSOLE_PASSWORD or ScamTrace_Engine_Key.</p>
+    </form>
+  </div>
+
+  <script>
+    async function boot() {
+      try {
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+        if (res.ok) {
+          window.location.replace("/console");
+        }
+      } catch {
+        // stay on login
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById("error");
+      const btn = document.getElementById("submitBtn");
+      const password = document.getElementById("password").value;
+      errorEl.textContent = "";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          errorEl.textContent = data.error || "Login failed";
+          btn.disabled = false;
+          return;
+        }
+        window.location.href = "/console";
+      } catch (err) {
+        errorEl.textContent = err.message || "Network error";
+        btn.disabled = false;
+      }
+    });
+
+    boot();
+  </script>
+</body>
+</html>

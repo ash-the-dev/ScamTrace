@@ -19,3 +19,4 @@ Thumbs.db
 supabase/.temp/
 
 # Optional: keep schema backups, exclude credential files (covered above)
+.vercel

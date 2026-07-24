@@ -1,5 +1,17 @@
 {
   "name": "scamtrace",
   "version": "1.0.0",
-  "type": "module"
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "pipeline": "node pipeline.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
+    "axios": "^1.16.1",
+    "dotenv": "^17.4.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

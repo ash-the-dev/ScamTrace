@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/console", "destination": "/console/index.html" },
+    { "source": "/console/", "destination": "/console/index.html" }
+  ],
+  "functions": {
+    "api/ingest.js": {
+      "maxDuration": 300
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/ingest",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/ingest",
+      "schedule": "0 13 * * 1"
+    },
+    {
+      "path": "/api/ingest",
+      "schedule": "0 14 * * 1"
+    },
+    {
+      "path": "/api/ingest",
+      "schedule": "0 15 * * 1"
+    }
+  ]
+}

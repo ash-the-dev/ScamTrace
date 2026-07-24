@@ -1,0 +1,2666 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "title": "standard public schema",
+    "version": "14.5"
+  },
+  "host": "fziyvuephghufczoppuq.supabase.co:443",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "produces": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "produces": [
+          "application/openapi+json",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "summary": "OpenAPI description (this document)",
+        "tags": [
+          "Introspection"
+        ]
+      }
+    },
+    "/scam_keywords": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.keyword_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.keyword"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.frequency"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/scam_keywords"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "scam_keywords"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.scam_keywords"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "scam_keywords"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.keyword_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.keyword"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.frequency"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_keywords"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.keyword_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.keyword"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.frequency"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_keywords.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.scam_keywords"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_keywords"
+        ]
+      }
+    },
+    "/trend_analysis": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.report_count"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.analysis_period_start"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.analysis_period_end"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_metadata"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/trend_analysis"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "trend_analysis"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.trend_analysis"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "trend_analysis"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.report_count"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.analysis_period_start"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.analysis_period_end"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_metadata"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "trend_analysis"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.report_count"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.analysis_period_start"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.analysis_period_end"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.trend_metadata"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.trend_analysis"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "trend_analysis"
+        ]
+      }
+    },
+    "/scam_indicators": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.risk_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/scam_indicators"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "scam_indicators"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.scam_indicators"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "scam_indicators"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.risk_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_indicators"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.indicator_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.risk_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_indicators.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.scam_indicators"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_indicators"
+        ]
+      }
+    },
+    "/trend_analysis_reports": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.trend_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/trend_analysis_reports"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "trend_analysis_reports"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.trend_analysis_reports"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "trend_analysis_reports"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.trend_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "trend_analysis_reports"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.trend_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.trend_analysis_reports.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.trend_analysis_reports"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "trend_analysis_reports"
+        ]
+      }
+    },
+    "/scam_reports": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.source_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.body"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.author"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.created_at_source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.keywords"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.raw_data"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.inserted_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.data_source_id"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/scam_reports"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "scam_reports"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.scam_reports"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "scam_reports"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.source_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.body"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.author"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.created_at_source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.keywords"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.raw_data"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.inserted_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.data_source_id"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_reports"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.source_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.body"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.author"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.created_at_source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.keywords"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.raw_data"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.inserted_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_reports.data_source_id"
+          },
+          {
+            "$ref": "#/parameters/body.scam_reports"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_reports"
+        ]
+      }
+    },
+    "/scam_classifications": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classification_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.risk_score"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classification_method"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.confidence_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classified_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/scam_classifications"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "scam_classifications"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.scam_classifications"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "scam_classifications"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classification_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.risk_score"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classification_method"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.confidence_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classified_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_classifications"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classification_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.scam_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.risk_score"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classification_method"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.confidence_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.scam_classifications.classified_at"
+          },
+          {
+            "$ref": "#/parameters/body.scam_classifications"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "scam_classifications"
+        ]
+      }
+    },
+    "/report_outputs": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.summary"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_data"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.generated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/report_outputs"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "report_outputs"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.report_outputs"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "report_outputs"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.summary"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_data"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.generated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "report_outputs"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.summary"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.output_data"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.report_outputs.generated_at"
+          },
+          {
+            "$ref": "#/parameters/body.report_outputs"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "report_outputs"
+        ]
+      }
+    },
+    "/data_sources": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.active"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/data_sources"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "data_sources"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.data_sources"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "data_sources"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.active"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "data_sources"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.source_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.active"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.data_sources.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.data_sources"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "data_sources"
+        ]
+      }
+    },
+    "/ingestion_logs": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.records_processed"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.records_saved"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.data_source_id"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ingestion_logs"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "ingestion_logs"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.ingestion_logs"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "ingestion_logs"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.records_processed"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.records_saved"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.data_source_id"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "ingestion_logs"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.source"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.records_processed"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.records_saved"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.ingestion_logs.data_source_id"
+          },
+          {
+            "$ref": "#/parameters/body.ingestion_logs"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "ingestion_logs"
+        ]
+      }
+    },
+    "/alerts": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.alerts.alert_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.alert_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.severity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.resolved"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/alerts"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "alerts"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.alerts"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "alerts"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.alerts.alert_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.alert_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.severity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.resolved"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "alerts"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.alerts.alert_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.scam_report_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.alert_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.severity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.resolved"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.alerts.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.alerts"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "alerts"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "scam_keywords": {
+      "required": [
+        "keyword_id",
+        "keyword",
+        "created_at"
+      ],
+      "properties": {
+        "keyword_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_report_id": {
+          "description": "Note:\nThis is a Foreign Key to `scam_reports.id`.<fk table='scam_reports' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "keyword": {
+          "format": "text",
+          "type": "string"
+        },
+        "frequency": {
+          "default": 1,
+          "format": "integer",
+          "type": "integer"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "trend_analysis": {
+      "required": [
+        "trend_id",
+        "trend_name",
+        "created_at"
+      ],
+      "properties": {
+        "trend_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "trend_name": {
+          "format": "text",
+          "type": "string"
+        },
+        "scam_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "report_count": {
+          "default": 0,
+          "format": "integer",
+          "type": "integer"
+        },
+        "analysis_period_start": {
+          "format": "date",
+          "type": "string"
+        },
+        "analysis_period_end": {
+          "format": "date",
+          "type": "string"
+        },
+        "trend_metadata": {
+          "format": "jsonb"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "scam_indicators": {
+      "required": [
+        "indicator_id",
+        "indicator_type",
+        "indicator_value",
+        "created_at"
+      ],
+      "properties": {
+        "indicator_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_report_id": {
+          "description": "Note:\nThis is a Foreign Key to `scam_reports.id`.<fk table='scam_reports' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "indicator_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "indicator_value": {
+          "format": "text",
+          "type": "string"
+        },
+        "risk_level": {
+          "default": "Medium",
+          "format": "text",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "trend_analysis_reports": {
+      "required": [
+        "trend_id",
+        "scam_report_id",
+        "created_at"
+      ],
+      "properties": {
+        "trend_id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `trend_analysis.trend_id`.<fk table='trend_analysis' column='trend_id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_report_id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `scam_reports.id`.<fk table='scam_reports' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "scam_reports": {
+      "required": [
+        "id",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source": {
+          "format": "text",
+          "type": "string"
+        },
+        "source_id": {
+          "format": "text",
+          "type": "string"
+        },
+        "title": {
+          "format": "text",
+          "type": "string"
+        },
+        "body": {
+          "format": "text",
+          "type": "string"
+        },
+        "url": {
+          "format": "text",
+          "type": "string"
+        },
+        "author": {
+          "format": "text",
+          "type": "string"
+        },
+        "created_at_source": {
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "scam_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "keywords": {
+          "format": "text[]",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "raw_data": {
+          "format": "jsonb"
+        },
+        "inserted_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "data_source_id": {
+          "description": "Note:\nThis is a Foreign Key to `data_sources.source_id`.<fk table='data_sources' column='source_id'/>",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "scam_classifications": {
+      "required": [
+        "classification_id",
+        "scam_type",
+        "classified_at"
+      ],
+      "properties": {
+        "classification_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_report_id": {
+          "description": "Note:\nThis is a Foreign Key to `scam_reports.id`.<fk table='scam_reports' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "risk_score": {
+          "default": 0,
+          "format": "integer",
+          "type": "integer"
+        },
+        "classification_method": {
+          "format": "text",
+          "type": "string"
+        },
+        "confidence_level": {
+          "format": "text",
+          "type": "string"
+        },
+        "classified_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "report_outputs": {
+      "required": [
+        "output_id",
+        "generated_at"
+      ],
+      "properties": {
+        "output_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_report_id": {
+          "description": "Note:\nThis is a Foreign Key to `scam_reports.id`.<fk table='scam_reports' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "output_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "summary": {
+          "format": "text",
+          "type": "string"
+        },
+        "output_data": {
+          "format": "jsonb"
+        },
+        "generated_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "data_sources": {
+      "required": [
+        "source_id",
+        "source_name",
+        "source_type",
+        "created_at"
+      ],
+      "properties": {
+        "source_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source_name": {
+          "format": "text",
+          "type": "string"
+        },
+        "source_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "source_url": {
+          "format": "text",
+          "type": "string"
+        },
+        "active": {
+          "default": true,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ingestion_logs": {
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source": {
+          "format": "text",
+          "type": "string"
+        },
+        "records_processed": {
+          "format": "integer",
+          "type": "integer"
+        },
+        "status": {
+          "format": "text",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "records_saved": {
+          "format": "integer",
+          "type": "integer"
+        },
+        "message": {
+          "format": "text",
+          "type": "string"
+        },
+        "data_source_id": {
+          "description": "Note:\nThis is a Foreign Key to `data_sources.source_id`.<fk table='data_sources' column='source_id'/>",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "alerts": {
+      "required": [
+        "alert_id",
+        "created_at"
+      ],
+      "properties": {
+        "alert_id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "scam_report_id": {
+          "description": "Note:\nThis is a Foreign Key to `scam_reports.id`.<fk table='scam_reports' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "alert_type": {
+          "format": "text",
+          "type": "string"
+        },
+        "severity": {
+          "format": "text",
+          "type": "string"
+        },
+        "message": {
+          "format": "text",
+          "type": "string"
+        },
+        "resolved": {
+          "default": false,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "parameters": {
+    "preferParams": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "preferReturn": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "preferCount": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "count=none"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "preferPost": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none",
+        "resolution=ignore-duplicates",
+        "resolution=merge-duplicates"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "select": {
+      "name": "select",
+      "description": "Filtering Columns",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "on_conflict": {
+      "name": "on_conflict",
+      "description": "On Conflict",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "order": {
+      "name": "order",
+      "description": "Ordering",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "range": {
+      "name": "Range",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "rangeUnit": {
+      "name": "Range-Unit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "default": "items",
+      "in": "header",
+      "type": "string"
+    },
+    "offset": {
+      "name": "offset",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "limit": {
+      "name": "limit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.scam_keywords": {
+      "name": "scam_keywords",
+      "description": "scam_keywords",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/scam_keywords"
+      }
+    },
+    "rowFilter.scam_keywords.keyword_id": {
+      "name": "keyword_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_keywords.scam_report_id": {
+      "name": "scam_report_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_keywords.keyword": {
+      "name": "keyword",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_keywords.frequency": {
+      "name": "frequency",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_keywords.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.trend_analysis": {
+      "name": "trend_analysis",
+      "description": "trend_analysis",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/trend_analysis"
+      }
+    },
+    "rowFilter.trend_analysis.trend_id": {
+      "name": "trend_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.trend_name": {
+      "name": "trend_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.scam_type": {
+      "name": "scam_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.report_count": {
+      "name": "report_count",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.analysis_period_start": {
+      "name": "analysis_period_start",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.analysis_period_end": {
+      "name": "analysis_period_end",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.trend_metadata": {
+      "name": "trend_metadata",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.scam_indicators": {
+      "name": "scam_indicators",
+      "description": "scam_indicators",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/scam_indicators"
+      }
+    },
+    "rowFilter.scam_indicators.indicator_id": {
+      "name": "indicator_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_indicators.scam_report_id": {
+      "name": "scam_report_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_indicators.indicator_type": {
+      "name": "indicator_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_indicators.indicator_value": {
+      "name": "indicator_value",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_indicators.risk_level": {
+      "name": "risk_level",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_indicators.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.trend_analysis_reports": {
+      "name": "trend_analysis_reports",
+      "description": "trend_analysis_reports",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/trend_analysis_reports"
+      }
+    },
+    "rowFilter.trend_analysis_reports.trend_id": {
+      "name": "trend_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis_reports.scam_report_id": {
+      "name": "scam_report_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.trend_analysis_reports.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.scam_reports": {
+      "name": "scam_reports",
+      "description": "scam_reports",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/scam_reports"
+      }
+    },
+    "rowFilter.scam_reports.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.source": {
+      "name": "source",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.source_id": {
+      "name": "source_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.title": {
+      "name": "title",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.body": {
+      "name": "body",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.url": {
+      "name": "url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.author": {
+      "name": "author",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.created_at_source": {
+      "name": "created_at_source",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.scam_type": {
+      "name": "scam_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.keywords": {
+      "name": "keywords",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.raw_data": {
+      "name": "raw_data",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.inserted_at": {
+      "name": "inserted_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_reports.data_source_id": {
+      "name": "data_source_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.scam_classifications": {
+      "name": "scam_classifications",
+      "description": "scam_classifications",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/scam_classifications"
+      }
+    },
+    "rowFilter.scam_classifications.classification_id": {
+      "name": "classification_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_classifications.scam_report_id": {
+      "name": "scam_report_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_classifications.scam_type": {
+      "name": "scam_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_classifications.risk_score": {
+      "name": "risk_score",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_classifications.classification_method": {
+      "name": "classification_method",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_classifications.confidence_level": {
+      "name": "confidence_level",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.scam_classifications.classified_at": {
+      "name": "classified_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.report_outputs": {
+      "name": "report_outputs",
+      "description": "report_outputs",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/report_outputs"
+      }
+    },
+    "rowFilter.report_outputs.output_id": {
+      "name": "output_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.report_outputs.scam_report_id": {
+      "name": "scam_report_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.report_outputs.output_type": {
+      "name": "output_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.report_outputs.summary": {
+      "name": "summary",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.report_outputs.output_data": {
+      "name": "output_data",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.report_outputs.generated_at": {
+      "name": "generated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.data_sources": {
+      "name": "data_sources",
+      "description": "data_sources",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/data_sources"
+      }
+    },
+    "rowFilter.data_sources.source_id": {
+      "name": "source_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.data_sources.source_name": {
+      "name": "source_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.data_sources.source_type": {
+      "name": "source_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.data_sources.source_url": {
+      "name": "source_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.data_sources.active": {
+      "name": "active",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.data_sources.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.ingestion_logs": {
+      "name": "ingestion_logs",
+      "description": "ingestion_logs",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/ingestion_logs"
+      }
+    },
+    "rowFilter.ingestion_logs.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.source": {
+      "name": "source",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.records_processed": {
+      "name": "records_processed",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.records_saved": {
+      "name": "records_saved",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.message": {
+      "name": "message",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.ingestion_logs.data_source_id": {
+      "name": "data_source_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.alerts": {
+      "name": "alerts",
+      "description": "alerts",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/alerts"
+      }
+    },
+    "rowFilter.alerts.alert_id": {
+      "name": "alert_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.alerts.scam_report_id": {
+      "name": "scam_report_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.alerts.alert_type": {
+      "name": "alert_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.alerts.severity": {
+      "name": "severity",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.alerts.message": {
+      "name": "message",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.alerts.resolved": {
+      "name": "resolved",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.alerts.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    }
+  },
+  "externalDocs": {
+    "description": "PostgREST Documentation",
+    "url": "https://postgrest.org/en/v14/references/api.html"
+  }
+}

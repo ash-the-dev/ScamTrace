@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScamTrace — Scam Intelligence & Fraud Awareness Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --bg-soft: #0a0a0a;
+      --bg-card: #ffffff;
+      --black: #000000;
+      --text: #0a0a0a;
+      --text-on-dark: #f5f5f5;
+      --text-muted: #4a4a4a;
+      --text-muted-dark: #a3a3a3;
+      --teal-deep: #0c3d39;
+      --teal: #0f5c55;
+      --teal-mid: #0f766e;
+      --teal-light: #14b8a6;
+      --teal-glow: #2dd4bf;
+      --cyan: #0f766e;
+      --cyan-bright: #14b8a6;
+      --accent: #0f766e;
+      --accent-grad: linear-gradient(180deg, #0f766e 0%, #0c3d39 100%);
+      --accent-dim: rgba(20, 184, 166, 0.12);
+      --border: #000000;
+      --border-card: 3px solid #000000;
+      --danger: #dc2626;
+      --warn: #d97706;
+      --radius: 0;
+      --radius-lg: 0;
+      --font: "DM Sans", system-ui, sans-serif;
+      --mono: "JetBrains Mono", monospace;
+      --shadow-block: 6px 6px 0 0 var(--teal-mid);
+      --shadow-block-black: 5px 5px 0 0 #000000;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-on-dark);
+      line-height: 1.6;
+    }
+
+    .bg-base {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background: #000;
+    }
+    .bg-shield {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: url("assets/bg-shield.png") center 42% / min(85vmin, 680px) no-repeat;
+      opacity: 0.28;
+      pointer-events: none;
+    }
+    .bg-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.55) 55%, #000 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    /* Blocky white cards */
+    .block-card,
+    .stat-card,
+    .feature-card,
+    .top5-item,
+    .intel-card,
+    .audience-card,
+    .api-audience-card,
+    .api-dual-card,
+    .api-feat,
+    .workflow,
+    .dash-mock,
+    .phase-card {
+      background: var(--bg-card) !important;
+      color: var(--text);
+      border: var(--border-card) !important;
+      border-radius: 0 !important;
+      box-shadow: var(--shadow-block) !important;
+    }
+    .block-card {
+      padding: 2rem 2.25rem;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1180px, 92vw); margin: 0 auto; }
+
+    .section { padding: 5rem 0; }
+    .section-alt {
+      background: transparent;
+      border-top: 3px solid var(--teal-mid);
+      border-bottom: 3px solid var(--teal-mid);
+    }
+    .section-title {
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-on-dark);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--text-muted-dark);
+      max-width: 36rem;
+      margin: 0 auto 3rem;
+      font-size: 1.02rem;
+    }
+    .on-card .section-title,
+    .on-card .section-sub { color: var(--text); }
+
+    /* Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.75rem 0;
+      background: #000;
+      border-bottom: 4px solid var(--teal-mid);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .logo img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted-dark);
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--teal-glow); }
+    .nav-ctas { display: flex; gap: 0.6rem; align-items: center; flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border-radius: 0;
+      border: 3px solid #000;
+      cursor: pointer;
+      transition: box-shadow 0.1s, margin 0.1s;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .btn:hover {
+      transform: none;
+      box-shadow: 2px 2px 0 0 #000;
+      margin: 4px 0 0 4px;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      border: 3px solid #fff;
+      box-shadow: 4px 4px 0 0 var(--teal-mid);
+    }
+    .btn-primary {
+      background: var(--teal-mid);
+      color: #fff;
+      box-shadow: 5px 5px 0 0 #000;
+      border: 3px solid #000;
+    }
+    .btn-outline {
+      background: #fff;
+      color: var(--black);
+      border: 3px solid #000;
+      box-shadow: 5px 5px 0 0 var(--teal-mid);
+    }
+    .btn-dark {
+      background: #000;
+      color: #fff;
+      border: 3px solid var(--teal-mid);
+      box-shadow: 5px 5px 0 0 var(--teal-mid);
+    }
+
+    /* Hero */
+    .hero { padding: 3rem 0 2.5rem; }
+    .hero-content {
+      max-width: 44rem;
+      color: var(--text);
+    }
+    .tagline-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--black);
+      border: 3px solid var(--teal-mid);
+      padding: 0.4rem 0.9rem;
+      border-radius: 0;
+      margin-bottom: 1.25rem;
+      box-shadow: 3px 3px 0 0 var(--teal-mid);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--teal-mid); -webkit-text-fill-color: var(--teal-mid); background: none; }
+    .hero-sub { color: var(--text-muted); font-size: 1.05rem; max-width: 32rem; margin-bottom: 0.5rem; }
+    .hero-tag-secondary {
+      font-size: 0.82rem;
+      color: var(--teal-deep);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+    .trust-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding-top: 1.5rem;
+      border-top: 3px solid var(--black);
+    }
+    .trust-row strong { color: var(--black); display: block; font-size: 1.15rem; font-weight: 800; }
+
+    .dash-mock {
+      padding: 1rem;
+    }
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-strong);
+      margin-bottom: 0.75rem;
+    }
+    .dash-dots { display: flex; gap: 6px; }
+    .dash-dots span { width: 10px; height: 10px; border-radius: 0; background: #e5e7eb; }
+    .dash-dots span:first-child { background: #fca5a5; }
+    .dash-dots span:nth-child(2) { background: #fcd34d; }
+    .dash-dots span:nth-child(3) { background: var(--teal-mid); }
+    .dash-title { font-size: 0.68rem; font-family: var(--mono); color: var(--text-muted); }
+    .dash-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .kpi {
+      background: #f0f0f0;
+      border: 2px solid var(--black);
+      border-radius: 0;
+      padding: 0.65rem;
+      box-shadow: 3px 3px 0 0 var(--teal-mid);
+    }
+    .kpi label {
+      font-size: 0.58rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .kpi .val { font-size: 1.05rem; font-weight: 700; font-family: var(--mono); color: var(--black); }
+    .kpi .delta { font-size: 0.62rem; color: var(--danger); margin-top: 0.1rem; }
+    .kpi .delta.up { color: var(--teal-deep); }
+    .dash-body { display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem; }
+    .panel {
+      background: #f5f5f5;
+      border: 2px solid var(--black);
+      border-radius: 0;
+      padding: 0.65rem;
+      box-shadow: 2px 2px 0 0 #000;
+    }
+    .panel h4 {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+    .dash-wrap {
+      max-width: 640px;
+      margin: 2.5rem auto 0;
+    }
+    .dash-wrap-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal-glow);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .dash-mock--compact {
+      padding: 0.6rem 0.7rem;
+      box-shadow: var(--shadow);
+    }
+    .dash-mock--compact .dash-header {
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .dash-mock--compact .dash-dots span { width: 8px; height: 8px; }
+    .dash-mock--compact .dash-title { font-size: 0.58rem; }
+    .dash-mock--compact .dash-kpis {
+      gap: 0.35rem;
+      margin-bottom: 0.5rem;
+    }
+    .dash-mock--compact .kpi { padding: 0.4rem 0.45rem; }
+    .dash-mock--compact .kpi label { font-size: 0.5rem; }
+    .dash-mock--compact .kpi .val { font-size: 0.8rem; }
+    .dash-mock--compact .kpi .delta { font-size: 0.52rem; }
+    .dash-mock--compact .dash-body { gap: 0.35rem; }
+    .dash-mock--compact .panel { padding: 0.4rem 0.5rem; }
+    .dash-mock--compact .panel h4 { font-size: 0.52rem; margin-bottom: 0.25rem; }
+    .dash-mock--compact .panel-legend { font-size: 0.52rem !important; }
+    .dash-mock--compact .panel-indicators { font-size: 0.58rem !important; line-height: 1.55 !important; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      padding: 1.5rem;
+    }
+    .stat-card .label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--black);
+      font-family: var(--mono);
+      margin-bottom: 0.75rem;
+    }
+    .stat-card .bar {
+      height: 8px;
+      background: #e5e5e5;
+      border: 2px solid var(--black);
+      border-radius: 0;
+      overflow: hidden;
+    }
+    .stat-card .bar-fill {
+      height: 100%;
+      background: var(--teal-mid);
+      border-radius: 0;
+    }
+    .problem-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .problem-item {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted-dark);
+    }
+    .problem-item::before {
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: var(--teal-mid);
+      border-radius: 0;
+      margin: 0 auto 0.75rem;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .feature-card {
+      padding: 1.5rem;
+      transition: margin 0.1s, box-shadow 0.1s;
+    }
+    .feature-card:hover {
+      border-color: var(--black) !important;
+      box-shadow: 3px 3px 0 0 var(--teal-mid) !important;
+      margin: 3px 0 0 3px;
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 0;
+      background: var(--black);
+      border: 3px solid var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: var(--cyan-bright);
+    }
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Workflow */
+    .workflow {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 0;
+      flex-wrap: wrap;
+      padding: 2rem;
+    }
+    .workflow-step {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      position: relative;
+      padding: 0 0.5rem;
+    }
+    .workflow-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -0.35rem;
+      top: 1.1rem;
+      color: var(--teal-deep);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .workflow-num {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 0.65rem;
+      border-radius: 0;
+      background: var(--teal-mid);
+      border: 3px solid var(--black);
+      box-shadow: 3px 3px 0 0 #000;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .workflow-step h4 { font-size: 0.82rem; font-weight: 600; color: var(--black); }
+
+    /* Intelligence showcase */
+    .intel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+    .intel-card {
+      padding: 1.25rem;
+    }
+    .intel-card.span-2 { grid-column: span 2; }
+    .intel-card h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .intel-card .big {
+      font-size: 1.75rem;
+      font-weight: 700;
+      font-family: var(--mono);
+      color: var(--black);
+    }
+    .intel-list { font-size: 0.82rem; color: var(--text-muted); line-height: 1.8; }
+    .intel-list strong { color: var(--black); }
+
+    /* Top 5 scams */
+    .top5-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .top5-header .section-title,
+    .top5-header .section-sub { text-align: left; margin: 0; }
+    .week-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: var(--mono);
+      color: #fff;
+      background: var(--black);
+      border: 3px solid var(--teal-mid);
+      padding: 0.45rem 0.9rem;
+      border-radius: 0;
+      white-space: nowrap;
+      box-shadow: 4px 4px 0 0 var(--teal-mid);
+    }
+    .top5-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .top5-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.15rem 1.35rem;
+      transition: margin 0.1s, box-shadow 0.1s;
+    }
+    .top5-item:hover {
+      margin: 4px 0 0 4px;
+      box-shadow: 3px 3px 0 0 var(--teal-mid) !important;
+    }
+    .top5-item.rank-1 {
+      border-left: 4px solid var(--teal-deep);
+      background: linear-gradient(90deg, rgba(12, 61, 57, 0.08) 0%, var(--bg-card) 28%);
+    }
+    .top5-rank {
+      width: 40px;
+      height: 40px;
+      border-radius: 0;
+      background: var(--black);
+      border: 3px solid var(--black);
+      box-shadow: 3px 3px 0 0 var(--teal-mid);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .top5-item.rank-1 .top5-rank {
+      background: var(--black);
+      color: var(--cyan-bright);
+      border: 2px solid var(--teal-deep);
+    }
+    .top5-info h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.2rem;
+    }
+    .top5-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.85rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .scam-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 0;
+      background: var(--bg-soft);
+      color: var(--black);
+      border: 1px solid var(--border);
+    }
+    .scam-tag.phishing { border-color: var(--teal); color: var(--teal-deep); background: var(--accent-dim); }
+    .scam-tag.tech { border-color: rgba(10, 10, 10, 0.2); }
+    .scam-tag.crypto { border-color: rgba(217, 119, 6, 0.35); color: var(--warn); background: rgba(217, 119, 6, 0.08); }
+    .scam-tag.romance { border-color: rgba(220, 38, 38, 0.25); color: var(--danger); background: rgba(220, 38, 38, 0.06); }
+    .top5-bar-wrap {
+      width: min(140px, 18vw);
+      display: none;
+    }
+    @media (min-width: 720px) {
+      .top5-bar-wrap { display: block; }
+      .top5-item { grid-template-columns: auto 1fr 140px auto auto; }
+    }
+    .top5-bar-wrap label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .top5-bar {
+      height: 8px;
+      background: #e5e5e5;
+      border: 2px solid var(--black);
+      border-radius: 0;
+      overflow: hidden;
+    }
+    .top5-bar-fill {
+      height: 100%;
+      background: var(--teal-mid);
+      border-radius: 0;
+    }
+    .top5-stats {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .top5-stats .reports {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--black);
+    }
+    .top5-stats .risk {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+    .top5-stats .risk strong { color: var(--danger); }
+    .trend-up {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--danger);
+      background: #fff;
+      border: 2px solid var(--black);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0;
+      box-shadow: 2px 2px 0 0 #000;
+    }
+
+    /* API section */
+    .api-section {
+      background: transparent;
+      border-top: 4px solid var(--teal-mid);
+      border-bottom: 4px solid var(--teal-mid);
+    }
+    .api-section .section-title,
+    .api-section .api-headline { color: var(--text-on-dark); }
+    .api-section .section-sub { color: var(--text-muted-dark); }
+    .api-optional-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #fff;
+      background: var(--black);
+      border: 3px solid var(--teal-mid);
+      padding: 0.4rem 0.9rem;
+      border-radius: 0;
+      margin-bottom: 1rem;
+      box-shadow: 4px 4px 0 0 var(--teal-mid);
+    }
+    .api-dual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      max-width: 52rem;
+      margin: 0 auto 2.5rem;
+    }
+    .api-dual-card {
+      padding: 1.25rem 1.35rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .api-dual-card.primary { border-color: var(--teal-deep); border-width: 2px; }
+    .api-dual-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 0;
+      background: var(--black);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .api-dual-card.primary .api-dual-num { background: var(--teal-deep); }
+    .api-dual-card h3 { font-size: 0.95rem; color: var(--black); margin-bottom: 0.35rem; }
+    .api-dual-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+    .api-audience {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .api-audience-card {
+      padding: 1.25rem;
+    }
+    .api-audience-card .api-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 0;
+      background: var(--black);
+      border: 3px solid var(--teal-mid);
+      color: var(--teal-glow);
+      box-shadow: 3px 3px 0 0 var(--teal-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.85rem;
+    }
+    .api-audience-card h3 { font-size: 0.95rem; color: var(--black); margin-bottom: 0.4rem; }
+    .api-audience-card p { font-size: 0.85rem; color: var(--text-muted); }
+
+    .api-features-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted-dark);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .api-features {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 2.5rem;
+    }
+    .api-feat {
+      padding: 0.85rem 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--black);
+      text-align: center;
+      line-height: 1.35;
+      transition: border-color 0.2s;
+    }
+    .api-feat:hover { border-color: rgba(15, 92, 85, 0.45); }
+    .api-feat svg { display: block; margin: 0 auto 0.45rem; color: var(--accent); }
+
+    .api-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr 1fr;
+      gap: 1.25rem;
+      align-items: stretch;
+      margin-bottom: 2rem;
+    }
+    .api-panel {
+      background: #050505;
+      border: 3px solid var(--teal-mid);
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: 6px 6px 0 0 #000;
+    }
+    .api-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: #8b949e;
+    }
+    .api-panel-header .method {
+      font-weight: 600;
+      color: #5eead4;
+      margin-right: 0.5rem;
+    }
+    .api-endpoints { padding: 0.75rem 1rem; }
+    .api-endpoint {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: #c9d1d9;
+    }
+    .api-endpoint:last-child { border-bottom: none; }
+    .api-endpoint .m-get { color: #3fb950; font-weight: 600; width: 2.5rem; }
+    .api-endpoint .m-post { color: #d29922; font-weight: 600; width: 2.5rem; }
+    .api-code {
+      padding: 1rem 1.1rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.65;
+      color: #e6edf3;
+      overflow-x: auto;
+    }
+    .api-code .key { color: #79c0ff; }
+    .api-code .str { color: #a5d6ff; }
+    .api-code .num { color: #ffa657; }
+    .api-integration {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .api-integ-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: #c9d1d9;
+    }
+    .api-integ-box {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0;
+      padding: 0.5rem 0.65rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-align: center;
+    }
+    .api-integ-box.highlight {
+      border-color: var(--teal-mid);
+      background: rgba(12, 61, 57, 0.45);
+      color: #5eead4;
+    }
+    .api-integ-arrow { color: #484f58; font-size: 0.85rem; }
+    .api-ctas {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .api-headline {
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      color: var(--teal-glow);
+      text-align: center;
+      margin: 0.35rem auto 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* Audience */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .audience-card {
+      border-top: 6px solid var(--teal-mid) !important;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .audience-card h3 { font-size: 1.15rem; color: var(--black); margin-bottom: 0.75rem; }
+    .audience-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* Roadmap */
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+      padding-top: 2rem;
+    }
+    .roadmap::before {
+      content: "";
+      position: absolute;
+      top: 2.65rem;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: var(--accent-grad);
+      z-index: 0;
+    }
+    .phase-card {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 0.75rem;
+    }
+    .phase-dot {
+      width: 14px;
+      height: 14px;
+      background: var(--teal-mid);
+      border: 3px solid var(--black);
+      border-radius: 0;
+      margin: 0 auto 1rem;
+      box-shadow: 3px 3px 0 0 #000;
+    }
+    .phase-card h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--teal-deep);
+      margin-bottom: 0.35rem;
+    }
+    .phase-card h3 { font-size: 0.95rem; color: var(--black); font-weight: 600; }
+
+    /* CTA */
+    .cta-section {
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+      border-top: 4px solid var(--teal-mid);
+      border-bottom: 4px solid var(--teal-mid);
+    }
+    .cta-inner .section-title { color: var(--text-on-dark); }
+    .cta-inner .section-sub { color: var(--text-muted-dark); }
+    .cta-network {
+      position: absolute;
+      inset: 0;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .cta-inner {
+      position: relative;
+      text-align: center;
+      padding: 5rem 1rem;
+    }
+    .cta-inner h2 { margin-bottom: 1rem; }
+    .cta-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+
+    /* Footer */
+    .footer {
+      background: #000;
+      color: #e5e7eb;
+      padding: 3.5rem 0 2rem;
+      border-top: 4px solid var(--teal-mid);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 2fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer .logo img { height: 52px; filter: brightness(1.05); }
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .footer-links h5 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal-light);
+      margin-bottom: 0.75rem;
+    }
+    .footer-links a {
+      display: block;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 0.4rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .social { display: flex; gap: 0.75rem; }
+    .social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 0;
+      border: 2px solid var(--teal-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social a:hover { border-color: var(--teal-mid); color: #5eead4; }
+
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .features-grid, .stats-grid, .problem-list,
+      .audience-grid, .intel-grid, .roadmap,
+      .api-dual, .api-audience, .api-features, .api-showcase { grid-template-columns: 1fr; }
+      .api-features { grid-template-columns: repeat(2, 1fr); }
+      .top5-item { grid-template-columns: auto 1fr auto !important; gap: 0.75rem; }
+      .top5-header .section-title, .top5-header .section-sub { text-align: center; }
+      .top5-header { flex-direction: column; align-items: center; text-align: center; }
+      .trend-up { display: none; }
+      .dash-kpis { grid-template-columns: repeat(2, 1fr); }
+      .dash-wrap { max-width: 100%; }
+      .workflow-step:not(:last-child)::after { display: none; }
+      .workflow { flex-direction: column; gap: 1.5rem; }
+      .roadmap::before { display: none; }
+      .intel-card.span-2 { grid-column: span 1; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-base"></div>
+  <div class="bg-shield" aria-hidden="true"></div>
+  <div class="bg-vignette" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo">
+        <img src="assets/scamtrace-logo.png" alt="ScamTrace — Trace. Analyze. Protect." />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#top-scams">This Week</a></li>
+        <li><a href="#api">API</a></li>
+        <li><a href="#intelligence">Intelligence</a></li>
+        <li><a href="#reports">Reports</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-ctas">
+        <a href="#intelligence" class="btn btn-ghost">View Threat Feed</a>
+        <a href="#cta" class="btn btn-primary">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container hero-content block-card">
+      <div class="tagline-pill">Scam Intelligence &amp; Fraud Awareness</div>
+      <h1>Scam Intelligence for a <span>Safer Digital World</span></h1>
+      <p class="hero-sub">ScamTrace aggregates, analyzes, and visualizes scam reports from public sources to help individuals and organizations identify emerging fraud threats.</p>
+      <p class="hero-tag-secondary">Track · Analyze · Prevent</p>
+      <div class="hero-ctas">
+        <a href="#intelligence" class="btn btn-primary">View Scam Intelligence</a>
+        <a href="#intelligence" class="btn btn-outline">Explore Threat Feed</a>
+      </div>
+      <div class="trust-row">
+        <div><strong>24,847</strong> Scam Reports Indexed</div>
+        <div><strong>142</strong> Emerging Campaigns</div>
+        <div><strong>98.2%</strong> Source Coverage</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="top-scams">
+    <div class="container">
+      <div class="top5-header">
+        <div>
+          <h2 class="section-title">Top 5 Scams This Week</h2>
+          <p class="section-sub" style="margin: 0.5rem 0 0; text-align: left;">Ranked by report volume across aggregated public sources. Updated weekly from threat intelligence feeds.</p>
+        </div>
+        <span class="week-badge">Week of May 25 – May 31, 2026</span>
+      </div>
+      <ol class="top5-list">
+        <li class="top5-item rank-1">
+          <span class="top5-rank">1</span>
+          <div class="top5-info">
+            <h3>IRS Tax Refund SMS Phishing</h3>
+            <div class="top5-meta">
+              <span class="scam-tag phishing">Phishing</span>
+              <span>Fake government refund links · SMS &amp; email</span>
+            </div>
+          </div>
+          <div class="top5-bar-wrap">
+            <label>Report volume</label>
+            <div class="top5-bar"><div class="top5-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="top5-stats">
+            <div class="reports">1,842</div>
+            <div class="risk">Risk score <strong>91</strong></div>
+          </div>
+          <span class="trend-up">↑ 28%</span>
+        </li>
+        <li class="top5-item">
+          <span class="top5-rank">2</span>
+          <div class="top5-info">
+            <h3>Fake Package Delivery Notifications</h3>
+            <div class="top5-meta">
+              <span class="scam-tag phishing">Phishing</span>
+              <span>USPS / UPS / FedEx impersonation URLs</span>
+            </div>
+          </div>
+          <div class="top5-bar-wrap">
+            <label>Report volume</label>
+            <div class="top5-bar"><div class="top5-bar-fill" style="width:82%"></div></div>
+          </div>
+          <div class="top5-stats">
+            <div class="reports">1,506</div>
+            <div class="risk">Risk score <strong>86</strong></div>
+          </div>
+          <span class="trend-up">↑ 19%</span>
+        </li>
+        <li class="top5-item">
+          <span class="top5-rank">3</span>
+          <div class="top5-info">
+            <h3>Tech Support Callback Rings</h3>
+            <div class="top5-meta">
+              <span class="scam-tag tech">Tech Support</span>
+              <span>Remote access &amp; refund fraud scripts</span>
+            </div>
+          </div>
+          <div class="top5-bar-wrap">
+            <label>Report volume</label>
+            <div class="top5-bar"><div class="top5-bar-fill" style="width:65%"></div></div>
+          </div>
+          <div class="top5-stats">
+            <div class="reports">1,203</div>
+            <div class="risk">Risk score <strong>84</strong></div>
+          </div>
+          <span class="trend-up">↑ 15%</span>
+        </li>
+        <li class="top5-item">
+          <span class="top5-rank">4</span>
+          <div class="top5-info">
+            <h3>Cryptocurrency Investment Fraud</h3>
+            <div class="top5-meta">
+              <span class="scam-tag crypto">Crypto</span>
+              <span>Fake trading platforms &amp; wallet drains</span>
+            </div>
+          </div>
+          <div class="top5-bar-wrap">
+            <label>Report volume</label>
+            <div class="top5-bar"><div class="top5-bar-fill" style="width:54%"></div></div>
+          </div>
+          <div class="top5-stats">
+            <div class="reports">987</div>
+            <div class="risk">Risk score <strong>88</strong></div>
+          </div>
+          <span class="trend-up">↑ 31%</span>
+        </li>
+        <li class="top5-item">
+          <span class="top5-rank">5</span>
+          <div class="top5-info">
+            <h3>Romance &amp; Pig Butchering Contacts</h3>
+            <div class="top5-meta">
+              <span class="scam-tag romance">Romance</span>
+              <span>Long-con social engineering on dating apps</span>
+            </div>
+          </div>
+          <div class="top5-bar-wrap">
+            <label>Report volume</label>
+            <div class="top5-bar"><div class="top5-bar-fill" style="width:47%"></div></div>
+          </div>
+          <div class="top5-stats">
+            <div class="reports">864</div>
+            <div class="risk">Risk score <strong>79</strong></div>
+          </div>
+          <span class="trend-up">↑ 12%</span>
+        </li>
+      </ol>
+
+      <div class="dash-wrap">
+        <p class="dash-wrap-label">Threat intelligence preview</p>
+        <div class="dash-mock dash-mock--compact" aria-label="Scam intelligence dashboard preview">
+          <div class="dash-header">
+            <div class="dash-dots"><span></span><span></span><span></span></div>
+            <span class="dash-title">SCAMTRACE :: THREAT_INTEL_v2.4</span>
+          </div>
+          <div class="dash-kpis">
+            <div class="kpi"><label>Active Reports</label><div class="val">24,847</div><div class="delta up">+12.4% 7d</div></div>
+            <div class="kpi"><label>High Risk</label><div class="val">387</div><div class="delta">+8.1% 7d</div></div>
+            <div class="kpi"><label>Avg Risk Score</label><div class="val">72.4</div><div class="delta">Critical tier</div></div>
+            <div class="kpi"><label>Categories</label><div class="val">18</div><div class="delta up">+3 new</div></div>
+          </div>
+          <div class="dash-body">
+            <div class="panel">
+              <h4>Threat Trend — Fraud Reports (30d)</h4>
+              <svg viewBox="0 0 280 90" width="100%" height="56" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0f766e" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#0f766e" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path fill="url(#chartGrad)" d="M0,70 L40,55 L80,62 L120,40 L160,48 L200,28 L240,35 L280,18 L280,90 L0,90 Z"/>
+                <polyline fill="none" stroke="#0f766e" stroke-width="2" points="0,70 40,55 80,62 120,40 160,48 200,28 240,35 280,18"/>
+              </svg>
+            </div>
+            <div class="panel">
+              <h4>Scam Type Distribution</h4>
+              <svg viewBox="0 0 120 90" width="100%" height="52">
+                <circle cx="45" cy="45" r="32" fill="none" stroke="#e5e7eb" stroke-width="14"/>
+                <circle cx="45" cy="45" r="32" fill="none" stroke="#0f766e" stroke-width="14" stroke-dasharray="80 120" transform="rotate(-90 45 45)"/>
+                <circle cx="45" cy="45" r="32" fill="none" stroke="#0c3d39" stroke-width="14" stroke-dasharray="50 150" stroke-dashoffset="-80" transform="rotate(-90 45 45)"/>
+                <circle cx="45" cy="45" r="32" fill="none" stroke="#0a0a0a" stroke-width="14" stroke-dasharray="35 165" stroke-dashoffset="-130" transform="rotate(-90 45 45)"/>
+              </svg>
+              <div class="panel-legend" style="color:var(--text-muted);margin-top:0.2rem">Phishing 34% · Romance 22% · Crypto 18%</div>
+            </div>
+          </div>
+          <div class="dash-body" style="margin-top:0.35rem">
+            <div class="panel">
+              <h4>Geographic Threat Activity</h4>
+              <svg viewBox="0 0 200 70" width="100%" height="48">
+                <ellipse cx="100" cy="38" rx="85" ry="28" fill="none" stroke="rgba(12,61,57,0.35)" stroke-width="1"/>
+                <circle cx="72" cy="32" r="4" fill="#0f766e"/><circle cx="72" cy="32" r="8" fill="#0f766e" opacity="0.15"/>
+                <circle cx="118" cy="28" r="3" fill="#0c3d39"/><circle cx="118" cy="28" r="6" fill="#0c3d39" opacity="0.15"/>
+                <circle cx="95" cy="42" r="5" fill="#dc2626"/><circle cx="95" cy="42" r="10" fill="#dc2626" opacity="0.1"/>
+              </svg>
+            </div>
+            <div class="panel">
+              <h4>Recent Indicators</h4>
+              <div class="panel-indicators" style="font-family:var(--mono);color:var(--text-muted)">
+                <div><span style="color:var(--danger)">●</span> IRS refund SMS cluster</div>
+                <div><span style="color:var(--warn)">●</span> Fake parcel delivery URLs</div>
+                <div><span style="color:var(--accent)">●</span> Tech support callback ring</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="reports">
+    <div class="container">
+      <h2 class="section-title">Online Scams Are Growing Faster Than Awareness</h2>
+      <p class="section-sub">Fraud data is fragmented across platforms. Threat intelligence remains difficult to access for everyday users and smaller organizations.</p>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="label">Fraud Reports (Annual)</div>
+          <div class="number">2.6M+</div>
+          <div class="bar"><div class="bar-fill" style="width:88%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Phishing Attacks</div>
+          <div class="number">+34%</div>
+          <div class="bar"><div class="bar-fill" style="width:72%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Estimated Financial Losses</div>
+          <div class="number">$10.3B</div>
+          <div class="bar"><div class="bar-fill" style="width:95%"></div></div>
+        </div>
+      </div>
+      <div class="problem-list">
+        <p class="problem-item">Scam data is fragmented across forums, feeds, and agencies</p>
+        <p class="problem-item">Threat intelligence is difficult to access without enterprise tools</p>
+        <p class="problem-item">Emerging scam campaigns often go unnoticed until widespread harm</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="container">
+      <h2 class="section-title">Powerful Scam Intelligence Features</h2>
+      <p class="section-sub">Transforming scam reports into actionable threat intelligence for researchers, businesses, and the public.</p>
+      <div class="features-grid">
+        <article class="feature-card">
+          <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+          <h3>Scam Report Aggregation</h3>
+          <p>Collect and normalize reports from multiple public sources into a unified intelligence layer.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="16" height="16" rx="2"/><path d="M3 9h16M9 21V9"/></svg></div>
+          <h3>Threat Intelligence Dashboard</h3>
+          <p>Visualize scams, fraud trends, risk scores, and geographic activity in real time.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></div>
+          <h3>Scam Categorization</h3>
+          <p>Organize reports by scam type — phishing, romance, tech support, and more.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18V6M12 18V4M20 18v-8"/></svg></div>
+          <h3>Trend Analysis</h3>
+          <p>Identify emerging campaigns and spikes in fraud indicators before they scale.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg></div>
+          <h3>Threat Actor Tracking</h3>
+          <p>Monitor recurring patterns, indicators, and linked campaigns across sources.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><circle cx="12" cy="9" r="2"/></svg></div>
+          <h3>Future AI Classification</h3>
+          <p>Machine learning–assisted scam detection and automated risk scoring.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">How ScamTrace Works</h2>
+      <p class="section-sub">From public sources to actionable threat intelligence in a structured pipeline.</p>
+      <div class="workflow">
+        <div class="workflow-step"><div class="workflow-num">1</div><h4>External Sources</h4></div>
+        <div class="workflow-step"><div class="workflow-num">2</div><h4>Data Collection</h4></div>
+        <div class="workflow-step"><div class="workflow-num">3</div><h4>Validation &amp; Processing</h4></div>
+        <div class="workflow-step"><div class="workflow-num">4</div><h4>Database Intelligence Layer</h4></div>
+        <div class="workflow-step"><div class="workflow-num">5</div><h4>Analytics Engine</h4></div>
+        <div class="workflow-step"><div class="workflow-num">6</div><h4>Threat Dashboard</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section api-section" id="api">
+    <div class="container">
+      <div style="text-align:center">
+        <span class="api-optional-badge">Optional — Coming Soon</span>
+        <h2 class="section-title">ScamTrace API</h2>
+        <p class="api-headline">Integrate Scam Intelligence Directly Into Your Platform</p>
+        <p class="section-sub" style="max-width:42rem">
+          ScamTrace API allows organizations to connect their applications, dashboards, customer support tools, fraud prevention systems, and security workflows to ScamTrace’s scam intelligence database. Companies can use the API to check suspicious URLs, emails, phone numbers, scam indicators, categories, and risk scores.
+        </p>
+      </div>
+
+      <div class="api-dual">
+        <div class="api-dual-card primary">
+          <span class="api-dual-num">1</span>
+          <div>
+            <h3>Public Scam Intelligence Dashboard</h3>
+            <p>Explore threat trends, top scams, and risk insights through the ScamTrace web platform — built for everyone.</p>
+          </div>
+        </div>
+        <div class="api-dual-card">
+          <span class="api-dual-num">2</span>
+          <div>
+            <h3>Optional API for Organizations</h3>
+            <p>Integrate scam intelligence into your own apps, fraud stacks, and security workflows when you need programmatic access.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="api-features-label">Built for</p>
+      <div class="api-audience">
+        <div class="api-audience-card">
+          <div class="api-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="12" rx="1"/><path d="M6 7V5a4 4 0 018 0v2"/></svg></div>
+          <h3>Businesses</h3>
+          <p>Use ScamTrace intelligence to help protect customers from known scam patterns.</p>
+        </div>
+        <div class="api-audience-card">
+          <div class="api-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L3 7v6c0 5 3.75 9 9 10 5.25-1 9-6 9-6V7l-9-5z"/></svg></div>
+          <h3>Security Teams</h3>
+          <p>Integrate scam risk signals into internal fraud monitoring workflows.</p>
+        </div>
+        <div class="api-audience-card">
+          <div class="api-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6M13 4l-2 16"/></svg></div>
+          <h3>Developers</h3>
+          <p>Build scam-checking features directly into apps, tools, and dashboards.</p>
+        </div>
+        <div class="api-audience-card">
+          <div class="api-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M12 19V9M20 19V3"/></svg></div>
+          <h3>Researchers</h3>
+          <p>Access structured scam intelligence data for trend analysis and reporting.</p>
+        </div>
+      </div>
+
+      <p class="api-features-label">API capabilities</p>
+      <div class="api-features">
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a3 3 0 100-6 3 3 0 000 6z"/><path d="M2 13h2M20 13h2M12 3v2M12 21v2"/></svg>URL reputation lookup</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 6l8 6 8-6"/></svg>Email risk lookup</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16H6zM10 8h4M10 12h4"/></svg>Phone number risk lookup</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h14"/></svg>Scam category lookup</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M16 16l4 4"/></svg>Threat indicator search</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg>Risk score response</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18V6M12 18V4M20 18v-8"/></svg>Recent scam trend feed</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10 2h4l8 18H2L10 2z"/></svg>High-risk campaign alerts</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Bulk lookup support</div>
+        <div class="api-feat"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7h2a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-2M10 14V4a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2h-6"/></svg>API key authentication</div>
+      </div>
+
+      <div class="api-showcase">
+        <div class="api-panel">
+          <div class="api-panel-header">Endpoints · v1 (preview)</div>
+          <div class="api-endpoints">
+            <div class="api-endpoint"><span class="m-get">GET</span> /v1/lookup/url</div>
+            <div class="api-endpoint"><span class="m-get">GET</span> /v1/lookup/email</div>
+            <div class="api-endpoint"><span class="m-get">GET</span> /v1/lookup/phone</div>
+            <div class="api-endpoint"><span class="m-get">GET</span> /v1/indicators/search</div>
+            <div class="api-endpoint"><span class="m-get">GET</span> /v1/trends/recent</div>
+            <div class="api-endpoint"><span class="m-post">POST</span> /v1/lookup/bulk</div>
+          </div>
+        </div>
+        <div class="api-panel">
+          <div class="api-panel-header"><span><span class="method">GET</span> /v1/lookup/url</span> 200 OK</div>
+          <pre class="api-code"><code>{
+  <span class="key">"query"</span>: <span class="str">"example-suspicious-site.com"</span>,
+  <span class="key">"type"</span>: <span class="str">"url"</span>,
+  <span class="key">"risk_score"</span>: <span class="num">87</span>,
+  <span class="key">"risk_level"</span>: <span class="str">"high"</span>,
+  <span class="key">"category"</span>: <span class="str">"phishing"</span>,
+  <span class="key">"matched_indicators"</span>: <span class="num">4</span>,
+  <span class="key">"recommendation"</span>: <span class="str">"block_or_warn"</span>
+}</code></pre>
+        </div>
+        <div class="api-panel">
+          <div class="api-panel-header">Integration flow</div>
+          <div class="api-integration">
+            <div class="api-integ-row">
+              <div class="api-integ-box">Your App</div>
+              <span class="api-integ-arrow">→</span>
+              <div class="api-integ-box highlight">ScamTrace API</div>
+            </div>
+            <div class="api-integ-row">
+              <div class="api-integ-box">Support Desk</div>
+              <span class="api-integ-arrow">→</span>
+              <div class="api-integ-box highlight">Risk Signals</div>
+            </div>
+            <div class="api-integ-row">
+              <div class="api-integ-box">Fraud Engine</div>
+              <span class="api-integ-arrow">→</span>
+              <div class="api-integ-box highlight">Block / Warn</div>
+            </div>
+            <div class="api-integ-row">
+              <div class="api-integ-box">SIEM / SOAR</div>
+              <span class="api-integ-arrow">→</span>
+              <div class="api-integ-box highlight">Campaign Alerts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-ctas">
+        <a href="#contact" class="btn btn-primary">Request API Access</a>
+        <a href="#contact" class="btn btn-dark">View API Documentation</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="intelligence">
+    <div class="container">
+      <h2 class="section-title">ScamTrace Intelligence Center</h2>
+      <p class="section-sub">A unified view of scam reports, risk scoring, and emerging fraud campaigns.</p>
+      <div class="intel-grid">
+        <div class="intel-card"><h4>Total Scam Reports</h4><div class="big">24,847</div></div>
+        <div class="intel-card"><h4>High-Risk Threats</h4><div class="big" style="color:var(--danger)">387</div></div>
+        <div class="intel-card"><h4>Top Scam This Week</h4><div class="intel-list"><strong>#1 IRS Tax Refund SMS</strong><br>1,842 reports · Risk 91 · <span style="color:var(--danger)">↑28%</span></div></div>
+        <div class="intel-card"><h4>Risk Score Avg</h4><div class="big">72.4</div></div>
+        <div class="intel-card span-2">
+          <h4>Recent Scam Activity</h4>
+          <div class="intel-list">
+            <div><strong>14:32</strong> — New IRS SMS cluster detected (Risk: 89)</div>
+            <div><strong>13:18</strong> — Phishing URL campaign spike (+22%)</div>
+            <div><strong>11:45</strong> — Romance scam pattern match across 3 sources</div>
+            <div><strong>09:02</strong> — Crypto wallet drain indicators indexed</div>
+          </div>
+        </div>
+        <div class="intel-card span-2">
+          <h4>Threat Map — Active Regions</h4>
+          <svg viewBox="0 0 400 100" width="100%" height="100">
+            <ellipse cx="200" cy="55" rx="170" ry="38" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+            <circle cx="120" cy="48" r="6" fill="#0f766e" opacity="0.8"/><circle cx="120" cy="48" r="12" fill="#0f766e" opacity="0.12"/>
+            <circle cx="220" cy="42" r="8" fill="#0c3d39"/><circle cx="220" cy="42" r="14" fill="#0c3d39" opacity="0.12"/>
+            <circle cx="280" cy="58" r="5" fill="#0a0a0a" opacity="0.6"/><circle cx="280" cy="58" r="10" fill="#0a0a0a" opacity="0.08"/>
+            <circle cx="175" cy="62" r="4" fill="#dc2626" opacity="0.7"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="about">
+    <div class="container">
+      <h2 class="section-title">Built for Modern Fraud Intelligence</h2>
+      <p class="section-sub">ScamTrace serves individuals, businesses, and researchers with accessible threat analysis.</p>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <h3>Individuals</h3>
+          <p>Verify suspicious activity, understand fraud trends, and stay informed about emerging scams.</p>
+        </div>
+        <div class="audience-card">
+          <h3>Businesses</h3>
+          <p>Monitor fraud trends impacting customers and strengthen fraud prevention programs.</p>
+        </div>
+        <div class="audience-card">
+          <h3>Researchers</h3>
+          <p>Analyze scam campaigns, indicators, and intelligence data for academic and policy work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">The Future of Scam Intelligence</h2>
+      <p class="section-sub">A phased roadmap toward predictive fraud analytics and reputation intelligence.</p>
+      <div class="roadmap">
+        <div class="phase-card"><div class="phase-dot"></div><h4>Phase 1</h4><h3>Threat Intelligence Platform</h3></div>
+        <div class="phase-card"><div class="phase-dot"></div><h4>Phase 2</h4><h3>AI Classification</h3></div>
+        <div class="phase-card"><div class="phase-dot"></div><h4>Phase 3</h4><h3>Reputation Checking</h3></div>
+        <div class="phase-card"><div class="phase-dot"></div><h4>Phase 4</h4><h3>Predictive Threat Analytics</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="cta">
+    <svg class="cta-network" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice">
+      <defs><pattern id="net" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M40 0L0 0 0 40" fill="none" stroke="rgba(12,61,57,0.15)" stroke-width="1"/>
+      </pattern></defs>
+      <rect width="100%" height="100%" fill="url(#net)"/>
+      <circle cx="200" cy="120" r="3" fill="#0f766e" opacity="0.5"/><circle cx="400" cy="200" r="3" fill="#0f766e" opacity="0.5"/>
+      <circle cx="800" cy="150" r="3" fill="#0c3d39" opacity="0.5"/><circle cx="1000" cy="280" r="3" fill="#0f766e" opacity="0.5"/>
+      <line x1="200" y1="120" x2="400" y2="200" stroke="rgba(15,118,110,0.35)" stroke-width="1"/>
+      <line x1="400" y1="200" x2="800" y2="150" stroke="rgba(15,118,110,0.35)" stroke-width="1"/>
+      <line x1="800" y1="150" x2="1000" y2="280" stroke="rgba(15,118,110,0.35)" stroke-width="1"/>
+    </svg>
+    <div class="container cta-inner">
+      <h2 class="section-title">Help Build a Smarter Scam Intelligence Ecosystem</h2>
+      <p class="section-sub" style="margin-bottom:0">Join researchers and organizations working to make fraud intelligence accessible to everyone.</p>
+      <div class="cta-btns">
+        <a href="#intelligence" class="btn btn-primary">Explore Scam Intelligence</a>
+        <a href="#contact" class="btn btn-dark">Join the Platform</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="logo"><img src="assets/scamtrace-logo.png" alt="ScamTrace" /></a>
+          <p class="footer-tagline">TRACE · ANALYZE · PROTECT</p>
+        </div>
+        <div class="footer-links">
+          <div>
+            <h5>Platform</h5>
+            <a href="#features">Features</a>
+            <a href="#intelligence">Threat Feed</a>
+            <a href="#api">API</a>
+            <a href="#reports">Reports</a>
+          </div>
+          <div>
+            <h5>Legal</h5>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+          <div>
+            <h5>Contact</h5>
+            <a href="mailto:contact@scamtrace.io">contact@scamtrace.io</a>
+            <a href="#">About</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 ScamTrace. All rights reserved.</span>
+        <div class="social">
+          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="#" aria-label="GitHub"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

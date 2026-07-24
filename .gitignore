@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+**/credentials.env
+**/edge-secrets-values.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Supabase local temp / CLI cache
+supabase/.temp/
+
+# Optional: keep schema backups, exclude credential files (covered above)

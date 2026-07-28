@@ -1,6 +1,7 @@
 import axios from "axios";
 import { normalizeSpamhausDomain } from "../normalization/normalizeSpamhausDomain.js";
 import { withSupabaseRetry } from "../utils/supabaseRetry.js";
+import { dedupeBySourceId } from "../utils/dedupeBySourceId.js";
 
 const USER_AGENT =
   "script:ScamTrace:1.0 (by /u/scamtrace; contact: contact@scamtrace.io)";
@@ -152,18 +153,20 @@ export async function ingestSpamhaus(supabase) {
 
     console.log(`Spamhaus: enriching ${recordsProcessed} seed domains`);
 
-    const records = [];
+    const rawRecords = [];
     for (const domain of domains) {
       try {
         const result = await fetchDomainIntel(token, domain);
         if (!result || !shouldKeep(result.intel, result.listing)) continue;
-        records.push(
+        rawRecords.push(
           normalizeSpamhausDomain(domain, result.intel, result.listing)
         );
       } catch (err) {
         console.warn(`Spamhaus skip ${domain}: ${err.message}`);
       }
     }
+
+    const records = dedupeBySourceId(rawRecords).records;
 
     for (let i = 0; i < records.length; i += batchSize) {
       const batch = records.slice(i, i + batchSize);

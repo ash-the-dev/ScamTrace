@@ -4,6 +4,7 @@ import {
   finalizeOpenPhishRecord,
 } from "../normalization/normalizeOpenPhishUrl.js";
 import { withSupabaseRetry } from "../utils/supabaseRetry.js";
+import { dedupeBySourceId } from "../utils/dedupeBySourceId.js";
 
 const USER_AGENT =
   "script:ScamTrace:1.0 (by /u/scamtrace; contact: contact@scamtrace.io)";
@@ -68,9 +69,17 @@ export async function ingestOpenPhish(supabase) {
       `OpenPhish: fetched ${recordsProcessed} URLs from ${feedUrl} (limit ${limit})`
     );
 
-    const records = urls.map((url) =>
-      finalizeOpenPhishRecord(normalizeOpenPhishUrl(url, feedUrl))
-    );
+    const records = dedupeBySourceId(
+      urls.map((url) =>
+        finalizeOpenPhishRecord(normalizeOpenPhishUrl(url, feedUrl))
+      )
+    ).records;
+
+    if (records.length < urls.length) {
+      console.log(
+        `OpenPhish: deduped ${urls.length - records.length} fingerprint collisions before upsert`
+      );
+    }
 
     for (let i = 0; i < records.length; i += batchSize) {
       const batch = records.slice(i, i + batchSize);

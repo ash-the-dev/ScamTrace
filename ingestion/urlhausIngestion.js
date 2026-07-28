@@ -1,6 +1,7 @@
 import axios from "axios";
 import { normalizeUrlhausEntry } from "../normalization/normalizeUrlhausEntry.js";
 import { withSupabaseRetry } from "../utils/supabaseRetry.js";
+import { dedupeBySourceId } from "../utils/dedupeBySourceId.js";
 
 const USER_AGENT =
   "script:ScamTrace:1.0 (by /u/scamtrace; contact: contact@scamtrace.io)";
@@ -38,7 +39,9 @@ export async function ingestUrlhaus(supabase) {
 
     console.log(`URLHaus: fetched ${recordsProcessed} URLs (limit ${limit})`);
 
-    const records = slice.map((entry) => normalizeUrlhausEntry(entry));
+    const records = dedupeBySourceId(
+      slice.map((entry) => normalizeUrlhausEntry(entry))
+    ).records;
 
     for (let i = 0; i < records.length; i += batchSize) {
       const batch = records.slice(i, i + batchSize);

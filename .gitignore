@@ -18,5 +18,9 @@ Thumbs.db
 # Supabase local temp / CLI cache
 supabase/.temp/
 
+# Private ScamTrace Supabase backups (dumps, storage, exports)
+backups/scamtrace-supabase/*
+!backups/scamtrace-supabase/README.md
+
 # Optional: keep schema backups, exclude credential files (covered above)
 .vercel

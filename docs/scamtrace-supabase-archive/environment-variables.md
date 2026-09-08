@@ -29,12 +29,14 @@ Anon / publishable key is not required by current server-only architecture; if a
 
 | Name | Purpose | Used by | Scope | Configure in | Secret? |
 |------|---------|---------|-------|--------------|---------|
-| `CONSOLE_PASSWORD` | Shared ops console login | `utils/consoleAuth.js`, `api/auth/login.js` | Server | Vercel | **Yes** |
-| `ScamTrace_Engine_Key` | Fallback console password (legacy name) | `consoleAuth.js` | Server | Vercel / `.env` | **Yes** |
-| `SCAMTRACE_ENGINE_KEY` | Same fallback (alternate casing) | Scripts / docs | Server | `.env` | **Yes** |
-| `THREAT_SYNC_SECRET` | Session HMAC + cron bearer fallback | `consoleAuth.js`, ingest | Server | Vercel | **Yes** |
-| `CRON_SECRET` | Preferred Vercel Cron bearer | `isCronAuthorized`, `vercel.json` crons | Server | Vercel | **Yes** |
-| `ALLOW_QUERY_SECRET` | If `1`, allow `?secret=` for cron (dev only) | `consoleAuth.js` | Server | Optional | No (flag) |
+| `CONSOLE_PASSWORD` | Console login only | `getConsolePassword`, `api/auth/login.js` | Server | Vercel / `.env` | **Yes** |
+| `THREAT_SYNC_SECRET` | Session HMAC only (`scamtrace_session`) | `getSigningSecret`, create/verify session | Server | Vercel / `.env` | **Yes** |
+| `CRON_SECRET` | Cron bearer only | `isCronAuthorized`, Vercel Cron → `/api/ingest` | Server | Vercel | **Yes** |
+| `ALLOW_QUERY_SECRET` | If `1`, allow `?secret=` matching **CRON_SECRET** (dev only) | `consoleAuth.js` | Server | Optional | No (flag) |
+| `ScamTrace_Engine_Key` | **Deprecated — not read by runtime** | — | — | Do not set | — |
+| `SCAMTRACE_ENGINE_KEY` | **Deprecated — not read by runtime** | — | — | Do not set | — |
+
+No cross-fallbacks: password ≠ HMAC ≠ cron ≠ Groq.
 
 ---
 
@@ -86,6 +88,6 @@ Anon / publishable key is not required by current server-only architecture; if a
 ## Where to reconfigure after restore
 
 1. New Supabase project → copy URL + **new** service role key into Vercel + Apify + local `.env`.
-2. Rotate `CONSOLE_PASSWORD`, `CRON_SECRET`, `THREAT_SYNC_SECRET`.
+2. Rotate `CONSOLE_PASSWORD`, `CRON_SECRET`, `THREAT_SYNC_SECRET` (distinct values).
 3. Re-enter feed API keys and `GROQ_API_KEY` from provider dashboards (not recoverable from DB dump alone).
 4. For Postgres dumps: set `SCAMTRACE_DATABASE_URL` from Supabase Dashboard → **Database** → connection string (keep private).

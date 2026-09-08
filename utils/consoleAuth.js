@@ -3,22 +3,25 @@ import { createHmac, timingSafeEqual } from "crypto";
 export const SESSION_COOKIE = "scamtrace_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
+/**
+ * Session HMAC secret only. No fallbacks to cron/password/legacy keys.
+ */
 export function getSigningSecret() {
-  return (
-    process.env.THREAT_SYNC_SECRET ||
-    process.env.CRON_SECRET ||
-    process.env.CONSOLE_PASSWORD ||
-    process.env.ScamTrace_Engine_Key ||
-    ""
-  );
+  return String(process.env.THREAT_SYNC_SECRET || "").trim();
 }
 
+/**
+ * Console login password only. No Engine_Key / Groq / cron fallbacks.
+ */
 export function getConsolePassword() {
-  return (
-    process.env.CONSOLE_PASSWORD ||
-    process.env.ScamTrace_Engine_Key ||
-    ""
-  );
+  return String(process.env.CONSOLE_PASSWORD || "").trim();
+}
+
+/**
+ * Cron bearer secret only. No fallback to THREAT_SYNC_SECRET.
+ */
+export function getCronSecret() {
+  return String(process.env.CRON_SECRET || "").trim();
 }
 
 function safeEqual(a, b) {
@@ -45,7 +48,7 @@ function fromB64url(input) {
 export function createSessionToken(ttlSeconds = SESSION_TTL_SECONDS) {
   const secret = getSigningSecret();
   if (!secret) {
-    throw new Error("Missing signing secret (THREAT_SYNC_SECRET or CRON_SECRET)");
+    throw new Error("Session signing is not configured (THREAT_SYNC_SECRET)");
   }
 
   const exp = Math.floor(Date.now() / 1000) + ttlSeconds;
@@ -101,7 +104,7 @@ export function readSessionToken(req) {
 }
 
 export function isCronAuthorized(req) {
-  const secret = process.env.CRON_SECRET || process.env.THREAT_SYNC_SECRET;
+  const secret = getCronSecret();
   if (!secret) return false;
 
   const header = req.headers?.authorization || "";

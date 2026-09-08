@@ -162,7 +162,7 @@ Ops console uses **Vercel shared-password + HMAC cookie**, not Supabase Auth use
 
 | Mechanism | Location | Notes |
 |-----------|----------|-------|
-| Vercel Cron | `vercel.json` → `POST /api/ingest` | Schedules at 12:00 UTC daily + weekly slots; auth via `CRON_SECRET` / `THREAT_SYNC_SECRET` |
+| Vercel Cron | `vercel.json` → `POST /api/ingest` | Schedules at 12:00 UTC daily + weekly slots; auth via **`CRON_SECRET` only** |
 | Supabase Cron / Database Webhooks | — | **Not used** |
 | Realtime | — | Dependency present via `@supabase/supabase-js`; **no app subscriptions** |
 | Storage webhooks | — | N/A (no buckets) |

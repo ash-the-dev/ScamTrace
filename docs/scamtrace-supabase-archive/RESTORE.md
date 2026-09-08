@@ -62,8 +62,9 @@ Expected: **none**. No deploy step. If you add functions later, keep source unde
 ### 6. Auth / application secrets
 
 1. Configure Vercel (and Apify) with new `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`.
-2. Set console/cron secrets per [`auth.md`](./auth.md).
-3. Re-enter `URLHAUS_API_KEY`, Spamhaus creds, `GROQ_API_KEY` from providers.
+2. Set distinct `CONSOLE_PASSWORD`, `THREAT_SYNC_SECRET`, `CRON_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+3. Re-enter feed API keys and `GROQ_API_KEY` from providers.
+
 4. Redeploy Vercel; update Actor env; do **not** put service role in the browser.
 
 ### 7. Verify

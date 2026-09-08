@@ -4,6 +4,7 @@ import {
   readJsonBody,
   sessionCookieHeader,
   getConsolePassword,
+  getSigningSecret,
 } from "../../utils/consoleAuth.js";
 
 export default async function handler(req, res) {
@@ -15,7 +16,14 @@ export default async function handler(req, res) {
   if (!getConsolePassword()) {
     return res.status(503).json({
       ok: false,
-      error: "Console password not configured (CONSOLE_PASSWORD or ScamTrace_Engine_Key)",
+      error: "Console password not configured (CONSOLE_PASSWORD)",
+    });
+  }
+
+  if (!getSigningSecret()) {
+    return res.status(503).json({
+      ok: false,
+      error: "Session signing not configured (THREAT_SYNC_SECRET)",
     });
   }
 
@@ -31,9 +39,17 @@ export default async function handler(req, res) {
     res.setHeader("Set-Cookie", sessionCookieHeader(token));
     return res.status(200).json({ ok: true });
   } catch (err) {
+    const message = String(err.message || err);
+    // Never echo unexpected internals beyond a short, non-secret message.
+    if (message.includes("THREAT_SYNC_SECRET") || message.includes("Session signing")) {
+      return res.status(503).json({
+        ok: false,
+        error: "Session signing not configured (THREAT_SYNC_SECRET)",
+      });
+    }
     return res.status(400).json({
       ok: false,
-      error: String(err.message || err).slice(0, 200),
+      error: "Invalid request",
     });
   }
 }

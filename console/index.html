@@ -475,6 +475,24 @@
         .replace(/"/g, "&quot;");
     }
 
+    /** Only http(s) links become <a href>; other schemes render as text. */
+    function safeExternalLink(url) {
+      const raw = String(url ?? "").trim();
+      if (!raw) return "—";
+      let parsed;
+      try {
+        parsed = new URL(raw);
+      } catch {
+        return escapeHtml(raw);
+      }
+      const scheme = parsed.protocol.toLowerCase();
+      if (scheme !== "http:" && scheme !== "https:") {
+        return escapeHtml(raw);
+      }
+      const href = escapeHtml(parsed.href);
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(raw)}</a>`;
+    }
+
     async function ensureAuth() {
       const res = await fetch("/api/auth/me", { credentials: "include" });
       if (!res.ok) {
@@ -519,9 +537,7 @@
       const reportsBody = $("reportsBody");
       reportsBody.innerHTML = (data.recentReports || [])
         .map((row) => {
-          const url = row.url
-            ? `<a href="${escapeHtml(row.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.url)}</a>`
-            : "—";
+          const url = row.url ? safeExternalLink(row.url) : "—";
           return `<tr>
             <td>${escapeHtml(fmtDate(row.inserted_at))}</td>
             <td>${escapeHtml(row.source)}</td>

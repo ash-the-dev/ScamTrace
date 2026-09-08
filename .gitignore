@@ -1,12 +1,16 @@
 # Dependencies
 node_modules/
+apify-actor/node_modules/
+apify-actor/dist/
 
-# Environment / secrets
+# Environment / secrets (never commit)
 .env
 .env.*
 !.env.example
 **/credentials.env
 **/edge-secrets-values.env
+**/*secrets-values.env
+**/*-credentials.env
 
 # OS / editor
 .DS_Store
@@ -21,6 +25,29 @@ supabase/.temp/
 # Private ScamTrace Supabase backups (dumps, storage, exports)
 backups/scamtrace-supabase/*
 !backups/scamtrace-supabase/README.md
+backups/**
+!backups/**/README.md
 
-# Optional: keep schema backups, exclude credential files (covered above)
+# Historical supabase-backup snapshot: keep docs/types; ignore data/secrets/exports
+supabase-backup/**/credentials.env
+supabase-backup/**/edge-secrets-values.env
+supabase-backup/**/*.json
+supabase-backup/**/*.dump
+supabase-backup/**/*.sql.gz
+!supabase-backup/**/SCHEMA.md
+
+# Database dumps / exports / scraped or generated private data
+*.dump
+*.backup
+*.pgdump
+**/scam_reports.json
+**/threat_records.json
+**/threat_observations.json
+**/threat_ai_analysis.json
+**/exports/
+**/recordings/
+**/generated-reports/
+**/*.csv.gz
+
+# Vercel local
 .vercel

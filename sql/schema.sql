@@ -1,3 +1,19 @@
+/*
+ * OBSOLETE — do not apply to ScamTrace Engine.
+ *
+ * This file is an early design sketch (sources / raw_reports / processed_reports).
+ * It is NOT the live schema.
+ *
+ * Current schema / restore path:
+ *   sql/scamtrace_restore.sql          — legacy console ingest tables
+ *   sql/threat_intelligence.sql        — threat_records + runs/errors/links
+ *   sql/threat_observations.sql
+ *   sql/threat_fk_risk.sql
+ *   sql/threat_remediation.sql
+ *   sql/threat_ai_analysis.sql
+ *   docs/scamtrace-supabase-archive/RESTORE.md
+ */
+
 create table sources (
   id uuid primary key default gen_random_uuid(),
   name text not null,

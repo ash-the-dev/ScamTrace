@@ -1,47 +1,35 @@
-# Supabase backup — ScamTrace Engine
+# Supabase backup — historical project `fziyvuephghufczoppuq` (deleted)
 
-Backup created before deleting project `fziyvuephghufczoppuq`.
+Human-readable schema notes and types may be tracked. **JSON table dumps, OpenAPI exports, and credentials are local-only** (gitignored) and must never be committed.
 
-## Latest snapshot
+## Snapshot folder
 
 `2026-07-04-fziyvuephghufczoppuq/`
 
-| File | Description |
-|------|-------------|
-| `scam_reports.json` | **51** normalized Reddit scam reports |
-| `ingestion_logs.json` | **2** ingestion run logs |
-| `*.json` (other tables) | Empty arrays (schema exists, no rows) |
-| `database.types.ts` | Full schema types from `supabase gen types` |
+| Tracked (safe) | Description |
+|----------------|-------------|
 | `SCHEMA.md` | Human-readable schema summary |
-| `project.json` | Project metadata |
-| `manifest.json` | Export status per table |
-| `credentials.env` | **Secrets** — URL, anon key, service role key (keep private) |
-| `edge-functions.json` | Edge functions list (none deployed) |
-| `edge-secrets.json` | Edge secret **names** only (values are hashed, not exportable) |
-| `storage-buckets.json` | Storage buckets (none) |
-| `openapi-schema.json` | Full REST OpenAPI schema (service role) |
-| `docs/schema-notes.md` | Original design notes |
+| `schema.sql` | Schema DDL snapshot from that project |
+| `database.types.ts` | Types from `supabase gen types` |
+| `docs/schema-notes.md` | Design notes |
 
-## Re-export data
+| Local only (gitignored) | Description |
+|-------------------------|-------------|
+| `*.json` | Table dumps, OpenAPI, manifests, project metadata exports |
+| `credentials.env` | URL + keys — **never commit** |
+| `edge-secrets-values.env` | Edge secret values — **never commit** |
+
+For live Engine (`zomkqhaheyupvmcyednx`) private dumps, use `backups/scamtrace-supabase/` and `docs/scamtrace-supabase-archive/`.
+
+## Re-export data (local)
 
 ```bash
 node scripts/export-supabase-backup.mjs
 ```
 
-Requires `.env` with `SUPABASE_URL` and `SUPABASE_KEY` while the project still exists.
-
-## Restore to a new Supabase project
-
-1. Create a new Supabase project.
-2. Recreate tables using `database.types.ts` as reference (or restore `schema.sql` if you obtain a full dump with Docker + `supabase db dump`).
-3. Update `.env` with the new URL and keys.
-4. Import JSON with a script or Supabase SQL `COPY`/insert.
+Requires `.env` with `SUPABASE_URL` and a key while a project still exists. Output stays under `supabase-backup/` and remains gitignored when JSON.
 
 ## Notes
 
-- Anon key was used for initial table export; service role added for OpenAPI.
-- **Edge functions:** none deployed on this project.
-- **Edge secrets:** `SPAMHAUS_PASSWORD` value saved in `edge-secrets-values.env` (gitignored). `SPAMHAUS_REALM` and `SPAMHAUS_USERNAME` still only on Supabase unless you provide them.
-- **Storage:** no buckets.
-- `supabase db dump` failed (Docker Desktop not running). Types were pulled via linked CLI instead.
-- Do **not** commit `credentials.env` to git.
+- Do **not** commit `credentials.env`, JSON dumps, or OpenAPI snapshots.
+- Prefer `backups/scamtrace-supabase/<timestamp>/` for new Engine backups.

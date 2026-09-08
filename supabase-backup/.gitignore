@@ -1,4 +1,17 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit
 **/credentials.env
 **/edge-secrets-values.env
 .env
 .env.*
+
+# Table dumps / API exports / OpenAPI snapshots (keep local only)
+**/*.json
+!**/package.json
+!**/package-lock.json
+
+# Postgres dumps
+**/*.dump
+**/*.sql.gz
